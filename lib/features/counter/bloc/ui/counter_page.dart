@@ -18,6 +18,8 @@ class _CounterPageState extends State<CounterPage> {
     super.initState();
   }
 
+  int val = 0;
+
   //create instance of block
   final counterBloc = CounterBloc();
   @override
@@ -30,21 +32,46 @@ class _CounterPageState extends State<CounterPage> {
             context,
           ).showSnackBar(SnackBar(content: Text('SnackBar message')));
         } else if (state is CounterIncrementState) {
-          setState(() {});
+          setState(() {
+            val = val + 1;
+          });
         }
         // TODO: implement listener
       },
       child: Scaffold(
-        appBar: AppBar(title: Text('Counter App'), centerTitle: true),
+        appBar: AppBar(
+          title: Text('Counter App'),
+          centerTitle: true,
+          backgroundColor: Colors.blue.shade200,
+        ),
         body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Counter: '),
-            ElevatedButton(onPressed: () {}, child: Text('Increase')),
-            ElevatedButton(
-              onPressed: () {
-                counterBloc.add(CounterSnackBarEvent());
-              },
-              child: Text('Snackbar'),
+            Text('Counter: $val ', style: TextStyle(fontSize: 22)),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    counterBloc.add(CounterIncrementEvent(val: val));
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green.shade100,
+                  ),
+                  child: Text('Increase', style: TextStyle(fontSize: 22)),
+                ),
+                const SizedBox(width: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    counterBloc.add(CounterSnackBarEvent());
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue.shade100,
+                  ),
+                  child: Text('Snackbar', style: TextStyle(fontSize: 22)),
+                ),
+              ],
             ),
           ],
         ),
